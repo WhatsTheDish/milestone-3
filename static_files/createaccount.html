@@ -43,8 +43,15 @@ $(document).ready(function() {
       success: function( data ) {
         console.log("You received some data!", data);
         if (data == 'OK') {
-          $("#create").html($("#nameBox").val() + ", this will be where you can now search through our recipes!");
+          var k = "userName";
+          var v = $("#nameBox").val();
+          localStorage[k] = v; 
+          //$("#create").html($("#nameBox").val() + ", this will be where you can now search through our recipes!");
           $("#status").html("Successfully created a new user!");
+          setTimeout(function(){
+            window.location="http://localhost:3000/loggedin.html";
+          },2000);
+                     
         } 
         else {
           $("#status").html("Error: could not create a new user or user already exists!");

@@ -136,11 +136,6 @@ app.post('/users', function (req, res) {
   }
   );
   stmt.finalize();
- 
-  db.each("SELECT rowid AS id, info FROM lorem", function(err, row) {
-      console.log(row.id + ": " + row.info);
-  });
-  
 });
 
 
