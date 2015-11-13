@@ -138,7 +138,69 @@ app.post('/users', function (req, res) {
   stmt.finalize();
 });
 
+// READ profile data for a user
+//
+// To test with curl, run:
+//   curl -X GET http://localhost:3000/users/Philip
+//   curl -X GET http://localhost:3000/users/Jane
+app.get('/users/*', function (req, res) {
+  var nameToLookup = req.params[0];
+  console.log(nameToLookup);
+  db.each("SELECT rowid AS id, userName FROM users", function(err, row) {
+    console.log(row.id + ": " + row.userName);
+    console.log("EACHCALL");
+    if(row.userName == nameToLookup){
+      console.log("FOUND");
+      res.send(row);
+      //db.close();
+      //db.finalize();
+      return;
+    }
+  });
+  console.log("NOT FOUND");
+  res.send('{}'); 
+});
 
+
+
+
+
+/*
+// READ profile data for a user
+//
+// To test with curl, run:
+//   curl -X GET http://localhost:3000/users/Philip
+//   curl -X GET http://localhost:3000/users/Jane
+app.get('/users/*', function (req, res) {
+  //var nameToLookup = req.;
+  //console.log(nameToLookUp);
+   // this matches the '*' part of '/users/*' above
+  // try to look up in fakeDatabase
+  //var postBody = req.body;
+  //console.log(postBody);
+  var nameToLookup = req.params[0];
+  console.log(nameToLookup);
+  db.run("SELECT * FROM users WHERE userName = " + nameToLookup, function(err, row) {
+    //console.log(row.id + ": " + row.userName);
+    //console.log(*);
+      res.send(row);
+      return;
+  });
+  //console.log("BOO");
+  //res.send('{}');
+});
+
+/*
+   // failed, so return an empty JSON object!
+  db.each("SELECT rowid AS id, userName FROM users", function(row, err) {
+    var e = row.userName;
+    if (e == nameToLookup) {
+      res.send(e);
+    }
+  });
+*/
+
+/*
 // READ profile data for a user
 //
 // To test with curl, run:
@@ -199,7 +261,7 @@ app.put('/users/*', function (req, res) {
 
   res.send('ERROR'); // nobody in the database matches nameToLookup
 });
-
+*/
 
 // DELETE a user
 //
