@@ -35,7 +35,13 @@ $(document).ready(function() {
       success: function( data ) {
         console.log("You received some data!", data.userName);
         if (data.userName) {
+          var k = "userName";
+          var v = $("#nameBox").val();
+          localStorage[k] = v;
           $("#nameDiv").html("UserName: " + data.userName);
+          setTimeout(function(){
+            window.location="http://localhost:3000/loggedin.html";
+          },2000);
           //$("#ageDiv").html("My job is " + data.job);
           //$("#profileImage").attr("src", data.pet);
         }  
