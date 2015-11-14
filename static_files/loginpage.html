@@ -33,13 +33,13 @@ $(document).ready(function() {
       dataType : "JSON", // this URL returns data in JSON format
 
       success: function( data ) {
-        console.log("You received some data!", data.name);
-        if (data.name) {
-          $("#nameDiv").html("UserName: " + data.UserName);
+        console.log("You received some data!", data.userName);
+        if (data.userName) {
+          $("#nameDiv").html("UserName: " + data.userName);
           //$("#ageDiv").html("My job is " + data.job);
           //$("#profileImage").attr("src", data.pet);
         }  
-        if(data == null){
+        else{
           $("#status").html("Error: could not find user!");
           // clear the profile display
           $("#nameDiv").html("");

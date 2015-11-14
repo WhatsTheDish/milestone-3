@@ -145,20 +145,16 @@ app.post('/users', function (req, res) {
 //   curl -X GET http://localhost:3000/users/Jane
 app.get('/users/*', function (req, res) {
   var nameToLookup = req.params[0];
-  console.log(nameToLookup);
-  db.each("SELECT rowid AS id, userName FROM users", function(err, row) {
-    console.log(row.id + ": " + row.userName);
-    console.log("EACHCALL");
-    if(row.userName == nameToLookup){
-      console.log("FOUND");
-      res.send(row);
-      //db.close();
-      //db.finalize();
-      return;
+  db.all("SELECT * FROM users WHERE userName = ?", nameToLookup, function(err, row){
+    if(err) throw err;
+    console.log(row[0]);
+    if(row[0] == undefined){
+       res.send("{}"); 
+    }
+    else{
+      res.send(row[0]);
     }
   });
-  console.log("NOT FOUND");
-  res.send('{}'); 
 });
 
 
