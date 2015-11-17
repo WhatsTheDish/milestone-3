@@ -14,10 +14,42 @@ http://localhost:3000/createaccount.html
 
 <script src="jquery-1.11.3.min.js"></script>
 
+<script type="text/javascript">
+$(document).ready(function() {
+  // define a generic Ajax error handler:
+  // http://api.jquery.com/ajaxerror/
+  $(document).ajaxError(function() {
+    alert("Sorry, there was a problem!");
+  });
+
+  $("#logoutButton").click(function() {
+	console.log("clicked!");
+	$.ajax({
+		url: "users/" + $("#nameBox").val(),
+      type: "GET",
+      dataType : "JSON", // this URL returns data in JSON format
+
+		success: function() {
+	        console.log("You chose to logout!");
+	        localStorage.clear();
+			setTimeout(function(){
+	            window.location="http://localhost:3000/loginpage.html";
+	        },2000);
+		},// end of success
+	});//end of ajax	
+  });//end of log out button
+ });//end of function
+</script>
+
 </head>
   <body>
   	<h1>Welcome to What's The Dish!</h1>
   	<div id ="loggedInAs"></div>
+
+  	<p>
+    <button id="logoutButton">Log me out</button>
+    </p>
+
   </body>
 </html>
 

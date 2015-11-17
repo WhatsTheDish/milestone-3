@@ -43,6 +43,7 @@ $(document).ready(function() {
       success: function( data ) {
         console.log("You received some data!", data);
         if (data == 'OK') {
+<<<<<<< Updated upstream
           var k = "userName";
           var v = $("#nameBox").val();
           localStorage[k] = v; 
@@ -52,6 +53,9 @@ $(document).ready(function() {
             window.location="http://localhost:3000/loggedin.html";
           },2000);
                      
+=======
+          //window.location("http://localhost:3000/shit.html");
+>>>>>>> Stashed changes
         } 
         else {
           $("#status").html("Error: could not create a new user or user already exists!");
