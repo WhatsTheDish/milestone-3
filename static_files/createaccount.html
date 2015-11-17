@@ -23,6 +23,13 @@ http://localhost:3000/createaccount.html
 
 $(document).ready(function() {
 
+  console.log("Checking if logged in!");
+  if(localStorage["userName"] != null) {
+    setTimeout(function(){
+        window.location="http://localhost:3000/loggedin.html";
+    },0);
+  }
+
   // define a generic Ajax error handler:
   // http://api.jquery.com/ajaxerror/
   $(document).ajaxError(function() {
