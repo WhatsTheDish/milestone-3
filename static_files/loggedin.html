@@ -34,10 +34,12 @@ $(document).ready(function() {
 	        localStorage.clear();
 			setTimeout(function(){
 	            window.location="http://localhost:3000/loginpage.html";
-	        },2000);
+	        },0);
 		},// end of success
 	});//end of ajax	
   });//end of log out button
+
+
  });//end of function
 </script>
 
@@ -45,7 +47,9 @@ $(document).ready(function() {
   <body>
   	<h1>Welcome to What's The Dish!</h1>
   	<div id ="loggedInAs"></div>
-
+    <h2>My Allergies: </h2>
+    <div id ="allergicToPeanuts"></div>
+    <div id ="allergicToMilk"></div>
   	<p>
     <button id="logoutButton">Log me out</button>
     </p>
@@ -55,4 +59,12 @@ $(document).ready(function() {
 
 <script type="text/javascript">
 	document.getElementById("loggedInAs").innerHTML = "Logged in as: " + localStorage["userName"];
+  document.getElementById("allergicToPeanuts").innerHTML = "Allergic to Peanuts: " + localStorage["allergicToPeanuts"];
+  document.getElementById("allergicToMilk").innerHTML = "Allergic to Milk: " + localStorage["allergicToMilk"];
 </script>
+
+
+
+
+
+

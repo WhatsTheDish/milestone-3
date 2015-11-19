@@ -48,10 +48,17 @@ $(document).ready(function() {
           var k = "userName";
           var v = $("#nameBox").val();
           localStorage[k] = v;
+          var kk = "allergicToPeanuts";
+          var vv = data.allergicToPeanuts;
+          localStorage[kk] = vv;
+          var kkk = "allergicToMilk";
+          var vvv = data.allergicToMilk;
+          console.log(vvv);
+          localStorage[kkk] = vvv;
           $("#nameDiv").html("UserName: " + data.userName);
           setTimeout(function(){
             window.location="http://localhost:3000/loggedin.html";
-          },2000);
+          },0);
           //$("#ageDiv").html("My job is " + data.job);
           //$("#profileImage").attr("src", data.pet);
         }  
