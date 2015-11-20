@@ -46,7 +46,7 @@ db.serialize(function() {
   //stmt.run('Bob420', false, false);
   //stmt.finalize();
  
-  db.each("SELECT rowid AS id, userName, allergicToMilk, allergicToPeanuts FROM recipes", function(err, row) {
+  db.each("SELECT rowid AS id, userName, allergicToMilk, allergicToPeanuts FROM users", function(err, row) {
   console.log(row.id + ": " + row.userName + " " + row.allergicToMilk + " " + row.allergicToPeanuts);
   });
 });
@@ -75,7 +75,7 @@ db.serialize(function() {
   //stmt.run('Bob420', false, false);
   //stmt.finalize();
  
-  db.each("SELECT rowid AS id, title, recipe, allergicToMilk, allergicToPeanuts FROM users", function(err, row) {
+  db.each("SELECT rowid AS id, title, recipe, allergicToMilk, allergicToPeanuts FROM recipes", function(err, row) {
   console.log(row.id + ": " + row.title + " " + row.recipe + " " + row.allergicToMilk + " " + row.allergicToPeanuts);
   });
 });
@@ -182,9 +182,9 @@ app.post('/recipes', function (req, res) {
   var Milk = postBody.allergicToMilk;
 
   console.log(postBody);
-  console.log(myName);
+  console.log(Title);
   // must have a name!
-  if (!myName) {
+  if (!Title) {
     res.send('ERROR');
     return; // return early!
   }
