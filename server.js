@@ -46,8 +46,37 @@ db.serialize(function() {
   //stmt.run('Bob420', false, false);
   //stmt.finalize();
  
-  db.each("SELECT rowid AS id, userName, allergicToMilk, allergicToPeanuts FROM users", function(err, row) {
+  db.each("SELECT rowid AS id, userName, allergicToMilk, allergicToPeanuts FROM recipes", function(err, row) {
   console.log(row.id + ": " + row.userName + " " + row.allergicToMilk + " " + row.allergicToPeanuts);
+  });
+});
+
+//DATABASE TAKE 3 for recipes source = http://blog.modulus.io/nodejs-and-sqlite
+var fs = require("fs");
+var file = "recipes.db";
+var exists = fs.existsSync(file);
+
+if(!exists) {
+  console.log("Creating DB file.");
+  fs.openSync(file, "w");
+}
+
+var sqlite3 = require("sqlite3").verbose();
+var db = new sqlite3.Database(file);
+
+db.serialize(function() {
+  if(!exists) {
+    //db.run("CREATE TABLE Stuff (thing TEXT)");
+    db.run("CREATE TABLE recipes(title TEXT primary key, recipe TEXT, allergicToMilk BOOLEAN, allergicToPeanuts BOOLEAN)");
+  }
+  
+  //var stmt = db.prepare("INSERT INTO Stuff VALUES (?)");
+  //var stmt = db.prepare("INSERT INTO users VALUES(?, ?, ?)");
+  //stmt.run('Bob420', false, false);
+  //stmt.finalize();
+ 
+  db.each("SELECT rowid AS id, title, recipe, allergicToMilk, allergicToPeanuts FROM users", function(err, row) {
+  console.log(row.id + ": " + row.title + " " + row.recipe + " " + row.allergicToMilk + " " + row.allergicToPeanuts);
   });
 });
 
@@ -126,6 +155,53 @@ app.post('/users', function (req, res) {
   // postBody to the fakeDatabase list
   var stmt = db.prepare("INSERT INTO users VALUES(?, ?, ?)");
   stmt.run(postBody.name, postBody.allergicToPeanut, postBody.allergicToMilk, function(error){
+    if(error){
+      console.log(error.message);
+      res.send('DUPLICATE');
+    }
+    else{
+      res.send('OK');
+    }
+  }
+  );
+  stmt.finalize();
+// Updated upstream
+
+// Stashed changes
+});
+
+// CREATE a new recipe
+//
+// To test with curl, run:
+//   curl -X POST --data "name=Carol&job=scientist&pet=dog.jpg" http://localhost:3000/users
+app.post('/recipes', function (req, res) {
+  var postBody = req.body;
+  var Title = postBody.title;
+  var Recipe = postBody.recipe;
+  var Peanuts = postBody.allergicToPeanut;
+  var Milk = postBody.allergicToMilk;
+
+  console.log(postBody);
+  console.log(myName);
+  // must have a name!
+  if (!myName) {
+    res.send('ERROR');
+    return; // return early!
+  }
+  /*
+  // check if user's name is already in database; if so, send an error
+  for (var i = 0; i < db.length; i++) {
+    var e = db[i];
+    if (e.userName == myName) {
+      res.send('ERROR');
+      return; // return early!
+    }
+  }
+  */
+  // otherwise add the user to the database by pushing (appending)
+  // postBody to the fakeDatabase list
+  var stmt = db.prepare("INSERT INTO recipes VALUES(?, ?, ?, ?)");
+  stmt.run(postBody.title, postBody.recipe, postBody.allergicToPeanut, postBody.allergicToMilk, function(error){
     if(error){
       console.log(error.message);
       res.send('DUPLICATE');
