@@ -39,6 +39,30 @@ $(document).ready(function() {
 	});//end of ajax	
   });//end of log out button
 
+  $("#updateButton").click(function() {
+    $.ajax({
+      // The URL for the request -- note the simple REST API!
+      // all URLs are relative to http://localhost:3000/
+      url: "users/" + localStorage["userName"],
+      type: "PUT",
+      dataType : "text", // this URL returns a plain text string, not JSON
+
+      data : { 
+                name: localStorage["userName"],
+                allergicToMilk: $("#allergicToMilk").is(":checked"), 
+                allergicToPeanut: $("#allergicToPeanut").is(":checked")
+             },
+
+      success: function( data ) {
+        console.log("You received some data!", data);
+        if (data == 'OK') {
+          $("#status").html("Successfully updated user");
+        } else {
+          $("#status").html("Error: could not update user");
+        }
+      },
+    });
+  });
 
  });//end of function
 </script>
@@ -47,13 +71,17 @@ $(document).ready(function() {
   <body>
   	<h1>Welcome to What's The Dish!</h1>
   	<div id ="loggedInAs"></div>
-    <h2>My Allergies: </h2>
+    <h2>My Current Allergies: </h2>
     <div id ="allergicToPeanuts"></div>
     <div id ="allergicToMilk"></div>
   	<p>
     <button id="logoutButton">Log me out</button>
+    <h2> Update my Allergies: </h2>
+    <input type="checkbox" id="allergicToMilk">Lactose Intollerent<br>
+    <input type="checkbox" id="allergicToPeanut">Allergy to Peanuts<br>
+    <button id="updateButton">Update my Allergies</button>
     </p>
-
+    <div id="status"></div>
   </body>
 </html>
 

@@ -112,18 +112,6 @@ app.post('/users', function (req, res) {
     res.send('ERROR');
     return; // return early!
   }
-  /*
-  // check if user's name is already in database; if so, send an error
-  for (var i = 0; i < db.length; i++) {
-    var e = db[i];
-    if (e.userName == myName) {
-      res.send('ERROR');
-      return; // return early!
-    }
-  }
-  */
-  // otherwise add the user to the database by pushing (appending)
-  // postBody to the fakeDatabase list
   var stmt = db.prepare("INSERT INTO users VALUES(?, ?, ?)");
   stmt.run(postBody.name, postBody.allergicToPeanut, postBody.allergicToMilk, function(error){
     if(error){
@@ -136,9 +124,6 @@ app.post('/users', function (req, res) {
   }
   );
   stmt.finalize();
-// Updated upstream
-
-// Stashed changes
 });
 
 // READ profile data for a user
@@ -160,9 +145,25 @@ app.get('/users/*', function (req, res) {
   });
 });
 
-
-
-
+// UPDATE a user's profile with the data given in POST
+//
+// To test with curl, run:
+//   curl -X PUT --data "job=bear_wrangler&pet=bear.jpg" http://localhost:3000/users/Philip
+app.put('/users/*', function (req, res) {
+  var milkChange = req.body.allergicToMilk;
+  var peanutChange = req.body.allergicToPeanut;
+  var nameToLookup = req.params[0];
+  var stmt = db.prepare("UPDATE users SET allergicToMilk=?, allergicToPeanuts=? WHERE userName=?");
+  stmt.run(milkChange, peanutChange, nameToLookup, function(err){
+    if(err){
+      console.log(err.message);
+      res.send('ERROR'); 
+    } 
+    else{
+      res.send('OK');
+    }
+  });
+});
 
 /*
 // READ profile data for a user
@@ -234,33 +235,10 @@ app.get('/users', function (req, res) {
 
   res.send(allUsernames);
 });
-
-
-// UPDATE a user's profile with the data given in POST
-//
-// To test with curl, run:
-//   curl -X PUT --data "job=bear_wrangler&pet=bear.jpg" http://localhost:3000/users/Philip
-app.put('/users/*', function (req, res) {
-  var nameToLookup = req.params[0]; // this matches the '*' part of '/users/*' above
-  // try to look up in fakeDatabase
-  for (var i = 0; i < fakeDatabase.length; i++) {
-    var e = fakeDatabase[i];
-    if (e.name == nameToLookup) {
-      // update all key/value pairs in e with data from the post body
-      var postBody = req.body;
-      for (key in postBody) {
-        var value = postBody[key];
-        e[key] = value;
-      }
-
-      res.send('OK');
-      return; // return early!
-    }
-  }
-
-  res.send('ERROR'); // nobody in the database matches nameToLookup
-});
 */
+
+
+
 
 // DELETE a user
 //
